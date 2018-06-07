@@ -29,7 +29,22 @@ while True:
     cnts,heir=cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2:]
     center=None
     
-    #---remaining code goes here---
+    if len(cnts)>0:
+        c=max(cnts,key=cv2.contourArea)
+        ((x,y),radius)=cv2.minEnclosingCircle(c)
+        M=cv2.moments(c)
+        center=(int(M["m10"]/M["m00"]),int(M["m01"]/M["m00"]))
+
+        if radius>5:
+            cv2.circle(img,(int(x),int(y)),int(radius),(0,255,255),2)
+            cv2.circle(img,center,5,(0,0,255),-1)
+
+    pts.appendleft(center)
+    for i in xrange (1,len(pts)):
+        if pts[i-1]is None or pts[i]is None:
+            continue
+        thick=int(np.sqrt(len(pts)/float(i+1))*2.5)
+        cv2.line(img,pts[i-1],pts[i],(0,0,255),thick)
     
     cv2.imshow("mask",mask)
     cv2.imshow("res",res)
