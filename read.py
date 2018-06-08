@@ -19,8 +19,8 @@ while True:
     ret, img=frame.read()
     hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
     kernel=np.ones((5,5),np.uint8)
-    mask1=cv2.inRange(hsv,Lower_green,Upper_green)
-    mask2=cv2.inRange(hsv,Lower_green1,Upper_green1)
+    mask1=cv2.inRange(hsv,Lower_red,Upper_red)
+    mask2=cv2.inRange(hsv,Lower_red1,Upper_red1)
     mask=mask1+mask2
     mask=cv2.erode(mask,kernel,iterations=2)
     mask=cv2.morphologyEx(mask,cv2.MORPH_OPEN,kernel)
